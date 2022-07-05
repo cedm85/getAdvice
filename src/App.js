@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios'
+import React, { useState, useEffect } from 'react';
 
-function App() {
+
+const baseURL = 'https://api.adviceslip.com/advice'
+
+export default function App() {
+  const [getAdvice, setGetAdvice] = useState ()
+
+ const getUpdate = () => {
+  axios.get(baseURL)
+  .then( (response)=> {
+    setGetAdvice(response.data.slip.advice);
+  }); 
+ }
+
+ useEffect(getUpdate, []);
+ if (!getAdvice) return null;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app'>
+      <div className='card'>
+       <h1 className='heading'>{getAdvice}</h1>
+       <button className='button' onClick={getUpdate}> Give Me an Advice </button>       </div>
     </div>
-  );
+  )
 }
-
-export default App;
